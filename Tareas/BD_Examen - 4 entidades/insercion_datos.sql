@@ -61,3 +61,5 @@ VALUES
 ('Roberto',  'Hernandez', 'Cruz',     'Casado',    'Operario',      9500.00,  'Licenciatura', 4, 4, 9),
 ('Martha',   'Vazquez',   'Moreno',   'Soltera',   'Administrativa',8700.00,  'Preparatoria', 5, 5, 10);
 GO
+
+
