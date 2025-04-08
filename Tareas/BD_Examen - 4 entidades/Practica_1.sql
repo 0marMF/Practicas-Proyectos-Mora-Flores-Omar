@@ -117,22 +117,26 @@ AND 40;
 GO
 
 --7) Crear tabla "Filtrados" y guardar el promedio de los puntos anteriores
-SELECT NuevoUSerID, Nombre, ApellidoPaterno, ApellidoMAterno, Genero, Edad
+SELECT Nombre, ApellidoPaterno, ApellidoMAterno, Genero, Edad
 INTO Filtrados
 FROM Nuevo_Usuario
 WHERE Genero = 'F'
 AND Edad BETWEEN 16 AND 39; 
 GO
 
-INSERT INTO Filtrados (NuevoUSerID, Nombre, ApellidoPaterno, ApellidoMAterno, Genero, Edad)
-SELECT N.NuevoUSerID, N.Nombre, N.ApellidoPaterno, N.ApellidoMAterno, N.Genero, N.Edad
+INSERT INTO Filtrados(Nombre, ApellidoPaterno, ApellidoMAterno, Genero, Edad)
+SELECT N.Nombre, N.ApellidoPaterno, N.ApellidoMAterno, N.Genero, N.Edad
 FROM Nuevo_Usuario N
-WHERE Genero = 'M'
-AND Edad BETWEEN 17 AND 40; 
+WHERE N.Genero = 'M'
+AND N.Edad BETWEEN 17 AND 40;
 GO
+
 drop table Filtrados;
-go
+GO
+
 select * from Filtrados;
+GO
+select * from Nuevo_Usuario;
 GO
 
 
