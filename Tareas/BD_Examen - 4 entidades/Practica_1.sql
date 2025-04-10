@@ -139,4 +139,22 @@ GO
 select * from Nuevo_Usuario;
 GO
 
+--procedimiento almacenado Nuevo usuario insercion
+CREATE PROCEDURE InstertarNuevoUsuario 
+	@Nombre NVARCHAR(50),
+    @ApellidoPaterno NVARCHAR(50),
+    @ApellidoMaterno NVARCHAR(50),
+    @Genero CHAR(1),   -- 'M' para masculino, 'F' para femenino
+    @Edad INT, 
+	@RFC CHAR(13) 
+AS 
+BEGIN 
+	INSERT INTO Nuevo_Usuario (Nombre, ApellidoPaterno, ApellidoMaterno, Genero, Edad, RFC)
+	VALUES (@Nombre, @ApellidoPaterno, @ApellidoMaterno, @Genero, @Edad, @RFC);
+	END;
+	GO
+
+EXEC InstertarNuevoUsuario 'SAmuel','Horta', 'Perez', 'M', 22, 'SAHOPE2202200';
+GO
+
 
