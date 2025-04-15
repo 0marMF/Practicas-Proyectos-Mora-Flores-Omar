@@ -62,4 +62,97 @@ VALUES
 ('Martha',   'Vazquez',   'Moreno',   'Soltera',   'Administrativa',8700.00,  'Preparatoria', 5, 5, 10);
 GO
 
+-----------30 REGISTROS MAS-----------------
+INSERT INTO Empleados (Nombre, ApellidoPaterno, ApellidoMaterno, NumeroEmpleado, Genero, Puesto, Antiguedad, RFC) VALUES 
+('Juan', 'Pérez', 'Gómez', 1001, 'M', 'Gerente', 10, 'JUAP900101HDF'),
+('María', 'López', 'Hernández', 1002, 'F', 'Administrativo', 5, 'MARL850202MDF'),
+('Carlos', 'Mendoza', 'Díaz', 1003, 'M', 'Analista', 7, 'CARM920303HDF'),
+('Ana', 'Ruiz', 'Vargas', 1004, 'F', 'Contadora', 8, 'ANAR930404HDF'),
+('Pedro', 'Sánchez', 'Morales', 1005, 'M', 'Supervisor', 12, 'PEDS940505HDF'),
+('Laura', 'García', 'Torres', 1006, 'F', 'Coordinadora', 6, 'LAUG950606HDF'),
+('Luis', 'Fernández', 'Castillo', 1007, 'M', 'Técnico', 4, 'LUIF960707HDF'),
+('Carmen', 'Ramírez', 'Ortega', 1008, 'F', 'Ejecutiva', 9, 'CARR970808HDF'),
+('Miguel', 'Herrera', 'Reyes', 1009, 'M', 'Asistente', 3, 'MIHE980909HDF'),
+('Sofía', 'Domínguez', 'Ortiz', 1010, 'F', 'Directora', 15, 'SODO990101HDF'),
+('Alejandro', 'Torres', 'Ríos', 1011, 'M', 'Jefe de Proyectos', 11, 'ALET900111HDF'),
+('Daniela', 'Castillo', 'Ponce', 1012, 'F', 'Diseñadora', 4, 'DANC901212HDF'),
+('Roberto', 'Soto', 'Morales', 1013, 'M', 'Consultor', 8, 'ROBS912313HDF'),
+('Patricia', 'Martínez', 'Cruz', 1014, 'F', 'Especialista', 7, 'PATM923414HDF'),
+('Ernesto', 'Jiménez', 'Lozano', 1015, 'M', 'Ingeniero', 10, 'ERNI934515HDF'),
+('Gabriela', 'Navarro', 'Peña', 1016, 'F', 'Abogada', 9, 'GABN945616HDF'),
+('Fernando', 'Orozco', 'García', 1017, 'M', 'Operador', 5, 'FERO956717HDF'),
+('Isabel', 'Vega', 'Silva', 1018, 'F', 'Secretaria', 6, 'ISAV967818HDF'),
+('Sergio', 'Delgado', 'Aguilar', 1019, 'M', 'Coordinador', 7, 'SERD978919HDF'),
+('Veronica', 'Solís', 'Mendoza', 1020, 'F', 'Analista Senior', 12, 'VERS989020HDF');
+GO
+
+INSERT INTO TrabajadoresSociales (Nombre, ApellidoPaterno, ApellidoMaterno, NumeroTrabajadorSocial, Genero, RFC) VALUES 
+('Luis', 'González', 'Ramírez', 2001, 'M', 'LUGO901001HDF'),
+('María', 'Cruz', 'Ortiz', 2002, 'F', 'MACR902002HDF'),
+('Jorge', 'Ramírez', 'Mendoza', 2003, 'M', 'JORG903003HDF'),
+('Daniela', 'Hernández', 'Navarro', 2004, 'F', 'DANI904004HDF'),
+('Ricardo', 'Torres', 'Ramos', 2005, 'M', 'RICT905005HDF'),
+('Sonia', 'Silva', 'Pérez', 2006, 'F', 'SONI906006HDF'),
+('Antonio', 'Alvarez', 'Cruz', 2007, 'M', 'ANTO907007HDF'),
+('Carla', 'Vargas', 'Ibarra', 2008, 'F', 'CARL908008HDF'),
+('Miguel', 'Sánchez', 'Rojas', 2009, 'M', 'MIGU909009HDF'),
+('Elena', 'Ramírez', 'Morales', 2010, 'F', 'ELEN910101HDF'),
+('Eduardo', 'López', 'Díaz', 2011, 'M', 'EDUA911111HDF'),
+('Patricia', 'Martínez', 'Fuentes', 2012, 'F', 'PATR912121HDF'),
+('Francisco', 'Ortiz', 'González', 2013, 'M', 'FRAN913131HDF'),
+('Luisa', 'García', 'Mendoza', 2014, 'F', 'LUIS914141HDF'),
+('Roberto', 'Rojas', 'Fernández', 2015, 'M', 'ROBE915151HDF'),
+('Cristina', 'Alvarado', 'Suarez', 2016, 'F', 'CRIS916161HDF'),
+('Diego', 'Salinas', 'Moreno', 2017, 'M', 'DIEG917171HDF'),
+('Andrea', 'Molina', 'Valdez', 2018, 'F', 'ANDR918181HDF'),
+('Manuel', 'Castillo', 'Quiroz', 2019, 'M', 'MANU919191HDF'),
+('Sofía', 'Paredes', 'Cortez', 2020, 'F', 'SOFI920202HDF');
+GO
+
+INSERT INTO Viviendas (Calle, CP, Municipio, NumeroInt, NumeroExt, Colonia, Estado, Descripcion) VALUES
+('Calle Falsa 1', '01001', 'Municipio A', 101, 10, 'Centro', 'Estado X', 'Vivienda en zona céntrica'),
+('Avenida Siempre Viva 2', '01002', 'Municipio B', 102, 20, 'Norte', 'Estado Y', 'Construcción moderna'),
+('Boulevard de los Sueños 3', '01003', 'Municipio C', 103, 30, 'Sur', 'Estado Z', 'Residencia familiar'),
+('Calle del Sol 4', '01004', 'Municipio D', 104, 40, 'Occidental', 'Estado X', 'Vivienda con vista al parque'),
+('Avenida Libertad 5', '01005', 'Municipio E', 105, 50, 'Oriental', 'Estado Y', 'Casa con jardín'),
+('Calle Victoria 6', '01006', 'Municipio F', 106, 60, 'Centro', 'Estado Z', 'Residencia con excelente ubicación'),
+('Avenida Reforma 7', '01007', 'Municipio G', 107, 70, 'Norte', 'Estado X', 'Casa de dos pisos'),
+('Calle Independencia 8', '01008', 'Municipio H', 108, 80, 'Sur', 'Estado Y', 'Vivienda amplia y luminosa'),
+('Avenida Constitución 9', '01009', 'Municipio I', 109, 90, 'Centro', 'Estado Z', 'Casa con patio interior'),
+('Calle de la Amistad 10', '01010', 'Municipio J', 110, 100, 'Norte', 'Estado X', 'Residencia moderna'),
+('Boulevard de la Paz 11', '01011', 'Municipio K', 111, 110, 'Sur', 'Estado Y', 'Vivienda en zona tranquila'),
+('Calle de la Esperanza 12', '01012', 'Municipio L', 112, 120, 'Centro', 'Estado Z', 'Casa recientemente remodelada'),
+('Avenida del Progreso 13', '01013', 'Municipio M', 113, 130, 'Norte', 'Estado X', 'Residencia en desarrollo'),
+('Calle Primavera 14', '01014', 'Municipio N', 114, 140, 'Sur', 'Estado Y', 'Casa con diseño contemporáneo'),
+('Avenida Verdad 15', '01015', 'Municipio O', 115, 150, 'Centro', 'Estado Z', 'Vivienda de alta calidad'),
+('Calle de los Pinos 16', '01016', 'Municipio P', 116, 160, 'Norte', 'Estado X', 'Casa espaciosa y cómoda'),
+('Avenida de los Olivos 17', '01017', 'Municipio Q', 117, 170, 'Sur', 'Estado Y', 'Residencia en zona residencial'),
+('Calle del Parque 18', '01018', 'Municipio R', 118, 180, 'Centro', 'Estado Z', 'Casa cercana a parques y escuelas'),
+('Avenida de la Reforma 19', '01019', 'Municipio S', 119, 190, 'Norte', 'Estado X', 'Vivienda con acabados modernos'),
+('Calle Industrial 20', '01020', 'Municipio T', 120, 200, 'Sur', 'Estado Y', 'Casa en zona industrial adaptada a vivienda');
+GO
+
+INSERT INTO RepresentantesFamilia (Nombre, ApellidoPaterno, ApellidoMaterno, EstadoCivil, PuestoLaboral, IngresoMensual, GradoAcademico, EmpleadoID, TrabajadorSocialID, ViviendaID) VALUES 
+('Alejandro', 'Gómez', 'Serrano', 'Casado', 'Empleado', 5500.00, 'Licenciatura', 1, 2, 3),
+('Beatriz', 'Hernández', 'Luna', 'Soltera', 'Comercial', 4200.00, 'Técnico', 2, 3, 2),
+('Carlos', 'Ramírez', 'Morales', 'Casado', 'Obrero', 3100.00, 'Preparatoria', 3, 3, 3),
+('Diana', 'Torres', 'Vega', 'Divorciada', 'Administradora', 4800.00, 'Licenciatura', 4, 4, 4),
+('Eduardo', 'López', 'Cabrera', 'Casado', 'Contador', 6000.00, 'Maestría', 5, 5, 5),
+('Fernanda', 'Martínez', 'Paredes', 'Soltera', 'Directora', 7500.00, 'Doctorado', 6, 6, 6),
+('Gabriel', 'Silva', 'Ramos', 'Casado', 'Supervisor', 3900.00, 'Licenciatura', 7, 7, 7),
+('Helena', 'Vargas', 'Fuentes', 'Soltera', 'Asesora', 4300.00, 'Técnico', 8, 8, 8),
+('Ignacio', 'Navarro', 'Peña', 'Casado', 'Analista', 5200.00, 'Licenciatura', 9, 9, 9),
+('Julia', 'Ortiz', 'Cruz', 'Divorciada', 'Coordinadora', 6100.00, 'Licenciatura', 10, 10, 10),
+('Kevin', 'Díaz', 'Ramírez', 'Soltero', 'Operador', 3500.00, 'Preparatoria', 11, 11, 11),
+('Laura', 'Castillo', 'Salinas', 'Casada', 'Diseñadora', 4700.00, 'Licenciatura', 12, 12, 12),
+('Manuel', 'Rojas', 'Medina', 'Casado', 'Técnico', 3300.00, 'Técnico', 13, 13, 13),
+('Natalia', 'Acosta', 'Ponce', 'Soltera', 'Ejecutiva', 5800.00, 'Maestría', 14, 14, 14),
+('Oscar', 'Moreno', 'Vargas', 'Casado', 'Jefe', 6700.00, 'Licenciatura', 15, 15, 15),
+('Paula', 'Santos', 'Ríos', 'Viuda', 'Administradora', 5000.00, 'Licenciatura', 16, 16, 16),
+('Quintín', 'Cruz', 'Molina', 'Soltero', 'Operador', 3600.00, 'Preparatoria', 17, 17, 17),
+('Rosa', 'Rubio', 'García', 'Casada', 'Analista', 5400.00, 'Licenciatura', 18, 18, 18),
+('Santiago', 'Del Real', 'Herrera', 'Casado', 'Supervisor', 4600.00, 'Técnico', 19, 19, 19),
+('Teresa', 'Méndez', 'Fierro', 'Soltera', 'Coordinadora', 6300.00, 'Maestría', 20, 20, 20);
+GO
+
 
