@@ -21,7 +21,7 @@ CREATE TABLE Nuevo_Usuario (
     ApellidoPaterno NVARCHAR(50) NOT NULL,
     ApellidoMaterno NVARCHAR(50) NOT NULL,
     Genero CHAR(1) NOT NULL,   -- 'M' para masculino, 'F' para femenino
-    Edad INT,       
+    Edad INT       
 );
 GO
 
@@ -131,6 +131,13 @@ WHERE N.Genero = 'M'
 AND N.Edad BETWEEN 17 AND 40;
 GO
 
+INSERT INTO Filtrados(Nombre, ApellidoPaterno, ApellidoMAterno, Genero, Edad)
+SELECT N.Nombre, N.ApellidoPaterno, N.ApellidoMAterno, N.Genero, N.Edad
+FROM Nuevo_Usuario N
+WHERE N.Genero = 'F'
+AND N.Edad BETWEEN 16 AND 39;
+GO
+
 drop table Filtrados;
 GO
 
@@ -154,7 +161,7 @@ BEGIN
 	END;
 	GO
 
-EXEC InstertarNuevoUsuario 'SAmuel','Horta', 'Perez', 'M', 22, 'SAHOPE2202200';
+EXEC InstertarNuevoUsuario 'Samuel','Horta', 'Perez', 'M', 22, 'SAHOPE2202200';
 GO
 
 

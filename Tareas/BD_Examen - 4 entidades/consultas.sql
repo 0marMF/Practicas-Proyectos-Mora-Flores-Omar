@@ -6,3 +6,4 @@ SELECT * FROM Empleados;
 SELECT * FROM RepresentantesFamilia;
 SELECT * FROM TrabajadoresSociales;
 SELECT * FROM Viviendas;
+SELECT * FROM Nuevo_Usuario;
