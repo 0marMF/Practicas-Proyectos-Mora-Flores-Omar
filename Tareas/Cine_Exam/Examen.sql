@@ -4,76 +4,201 @@ GO
 --a) Integre el diagrama entidad – relación de dicho escenario con su cardinalidad y grado.
 
 
--- b) Realice la carga de 45 registros distribuidos en lastablas de Cliente, Empleado y Proveedor.
+-- b) Realice la carga de 45 registros DISTRIBUIDOS utilizando los procedimientos almacenados.
+-- --- Procedimiento para Insertar Clientes ---
+-- Crear SP para Clientes
+CREATE PROCEDURE dbo.sp_InsertarCliente (
+    @ID_Cliente INT,
+    @Nombre_Cliente VARCHAR(50),
+    @Ap_Pat_Cliente VARCHAR(50),
+    @Ap_Mat_Cliente VARCHAR(50) = NULL, -- Permitir NULL para apellido materno
+    @Correo_Cliente VARCHAR(100),
+    @Tel_Cliente VARCHAR(15),
+    @Genero_Cliente CHAR(1),
+    @Fecha_nac_Cliente DATE,
+    @Calle_Cliente VARCHAR(100),
+    @Num_ext_Cliente VARCHAR(10), -- VARCHAR para flexibilidad (e.g., 'S/N', '100A')
+    @Colonia_Cliente VARCHAR(100),
+    @CP_Cliente VARCHAR(5),
+    @Alcaldia_Cliente VARCHAR(50)
+)
+AS
+BEGIN
+    SET NOCOUNT ON; -- No mostrar mensajes de 'filas afectadas'
 
--- Insertar 15 nuevos registros en la tabla Clientes (IDs 11 a 25)
-INSERT INTO clientes (
-    ID_Cliente, Nombre_Cliente, Ap_Pat_Cliente, Ap_Mat_Cliente, Correo_Cliente,
-    Tel_Cliente, Genero_Cliente, Fecha_nac_Cliente, Calle_Cliente, Num_ext_Cliente,
-    Colonia_Cliente, CP_Cliente, Alcaldia_Cliente
-) VALUES
-(11, 'Sofia', 'Vargas', 'Luna', 'sofia.vl@mail.com', '5510102030', 'F', '1998-08-20', 'Revolución', 500, 'Escandón', '11800', 'Miguel Hidalgo'),
-(12, 'Javier', 'Morales', 'Soto', 'javier.ms@email.net', '5520203040', 'M', '1983-05-15', 'Patriotismo', 210, 'Condesa', '06140', 'Cuauhtémoc'),
-(13, 'Valentina', 'Rojas', 'Mendoza', 'vale.rm@example.org', '5530304050', 'F', '2001-01-10', 'Universidad', 1500, 'Copilco', '04360', 'Coyoacán'),
-(14, 'Diego', 'Castro', 'Guzman', 'diego.cg@mail.com', '5540405060', 'M', '1991-07-07', 'División del Norte', 800, 'Del Valle', '03100', 'Benito Juárez'),
-(15, 'Camila', 'Ortega', 'Silva', 'camila.os@email.net', '5550506070', 'F', '1989-03-25', 'Ejército Nacional', 450, 'Polanco', '11520', 'Miguel Hidalgo'),
-(16, 'Mateo', 'Salazar', 'Rios', 'mateo.sr@example.org', '5560607080', 'M', '1995-12-12', 'Periférico Sur', 3500, 'Jardines del Pedregal', '01900', 'Álvaro Obregón'),
-(17, 'Isabella', 'Guerrero', 'Paredes', 'isa.gp@mail.com', '5570708090', 'F', '1999-10-30', 'Insurgentes Sur', 1800, 'Florida', '01030', 'Álvaro Obregón'),
-(18, 'Sebastián', 'Molina', 'Cruz', 'sebastian.mc@email.net', '5580809000', 'M', '1980-06-18', 'Paseo de la Reforma', 300, 'Juárez', '06600', 'Cuauhtémoc'),
-(19, 'Regina', 'Navarro', 'Flores', 'regina.nf@example.org', '5590900010', 'F', '2000-02-02', 'Homero', 110, 'Polanco', '11560', 'Miguel Hidalgo'),
-(20, 'Emiliano', 'León', 'Herrera', 'emiliano.lh@mail.com', '5511112233', 'M', '1986-09-05', 'Felix Cuevas', 550, 'Del Valle', '03100', 'Benito Juárez'),
-(21, 'Renata', 'Solis', 'Jiménez', 'renata.sj@email.net', '5522223344', 'F', '1993-04-14', 'Miguel Ángel de Quevedo', 800, 'Taxqueña', '04250', 'Coyoacán'),
-(22, 'Leonardo', 'Romero', 'Blanco', 'leo.rb@example.org', '5533334455', 'M', '1975-11-28', 'Calz. de Tlalpan', 2000, 'Churubusco', '04210', 'Coyoacán'),
-(23, 'Victoria', 'Alonso', 'Muñoz', 'vicky.am@mail.com', '5544445566', 'F', '1997-08-09', 'Miramontes', 3100, 'Coapa', '14300', 'Tlalpan'),
-(24, 'Santiago', 'Paz', 'Vega', 'santi.pv@email.net', '5555556677', 'M', '1990-10-17', 'Barranca del Muerto', 150, 'Guadalupe Inn', '01020', 'Álvaro Obregón'),
-(25, 'Ximena', 'Reyes', 'Campos', 'ximena.rc@example.org', '5566667788', 'F', '1988-12-22', 'San Jerónimo', 630, 'San Jerónimo Lídice', '10200', 'Magdalena Contreras');
+    -- 1. Verificar si el ID del cliente ya existe
+    IF EXISTS (SELECT 1 FROM dbo.clientes WHERE ID_Cliente = @ID_Cliente)
+    BEGIN
+        PRINT 'ADVERTENCIA: El Cliente con ID ' + CAST(@ID_Cliente AS VARCHAR) + ' ya existe. No se insertará.';
+        RETURN -1; -- Indicar fallo (ID duplicado)
+    END
+
+    -- 2. Intentar la inserción
+    BEGIN 
+        INSERT INTO dbo.clientes (
+            ID_Cliente, Nombre_Cliente, Ap_Pat_Cliente, Ap_Mat_Cliente, Correo_Cliente,
+            Tel_Cliente, Genero_Cliente, Fecha_nac_Cliente, Calle_Cliente, Num_ext_Cliente,
+            Colonia_Cliente, CP_Cliente, Alcaldia_Cliente
+        ) VALUES (
+            @ID_Cliente, @Nombre_Cliente, @Ap_Pat_Cliente, @Ap_Mat_Cliente, @Correo_Cliente,
+            @Tel_Cliente, @Genero_Cliente, @Fecha_nac_Cliente, @Calle_Cliente, @Num_ext_Cliente,
+            @Colonia_Cliente, @CP_Cliente, @Alcaldia_Cliente
+        );
+        -- PRINT 'Cliente con ID ' + CAST(@ID_Cliente AS VARCHAR) + ' insertado correctamente.'; -- Opcional: mensaje de éxito
+        RETURN 0; -- Indicar éxito
+    END 
+END;
 GO
 
--- Insertar 15 nuevos registros en la tabla Empleados (IDs 8 a 22)
+-- --- Procedimiento para Insertar Empleados ---
+-- Crear SP para Empleados
+CREATE PROCEDURE dbo.sp_InsertarEmpleado (
+    @ID_Empleados INT,
+    @Nombre_Empleados VARCHAR(50),
+    @Ap_Pat_Empleados VARCHAR(50),
+    @Ap_Mat_Empleados VARCHAR(50) = NULL,
+    @Correo_Empleados VARCHAR(100),
+    @Tel_Empleados VARCHAR(15),
+    @Genero_Empleados CHAR(1),
+    @Fecha_nac_Empleados DATE,
+    @Calle_Empleados VARCHAR(100),
+    @Num_Empleados VARCHAR(10), -- VARCHAR para flexibilidad
+    @Colonia_Empleados VARCHAR(100),
+    @CP_Empleados VARCHAR(5),
+    @Alcaldia_Empleados VARCHAR(50),
+    @Turno_Empleados CHAR(1),
+    @ID_Sucursales INT
+)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- 1. Verificar si el ID del empleado ya existe
+    IF EXISTS (SELECT 1 FROM dbo.empleados WHERE ID_Empleados = @ID_Empleados)
+    BEGIN
+        PRINT 'ADVERTENCIA: El Empleado con ID ' + CAST(@ID_Empleados AS VARCHAR) + ' ya existe. No se insertará.';
+        RETURN -1; -- ID duplicado
+    END
+
+    -- 2. Verificar si la Sucursal (FK) existe
+    IF NOT EXISTS (SELECT 1 FROM dbo.sucursales WHERE ID_Sucursales = @ID_Sucursales)
+    BEGIN
+        PRINT 'ERROR: La Sucursal con ID ' + CAST(@ID_Sucursales AS VARCHAR) + ' no existe. No se puede insertar empleado con ID ' + CAST(@ID_Empleados AS VARCHAR) + '.';
+        RETURN -3; -- Error de FK
+    END
+
+    -- 3. Intentar la inserción
+    BEGIN 
+        INSERT INTO dbo.empleados (
+            ID_Empleados, Nombre_Empleados, Ap_Pat_Empleados, Ap_Mat_Empleados, Correo_Empleados,
+            Tel_Empleados, Genero_Empleados, Fecha_nac_Empleados, Calle_Empleados, Num_Empleados,
+            Colonia_Empleados, CP_Empleados, Alcaldia_Empleados, Turno_Empleados, ID_Sucursales
+        ) VALUES (
+            @ID_Empleados, @Nombre_Empleados, @Ap_Pat_Empleados, @Ap_Mat_Empleados, @Correo_Empleados,
+            @Tel_Empleados, @Genero_Empleados, @Fecha_nac_Empleados, @Calle_Empleados, @Num_Empleados,
+            @Colonia_Empleados, @CP_Empleados, @Alcaldia_Empleados, @Turno_Empleados, @ID_Sucursales
+        );
+        -- PRINT 'Empleado con ID ' + CAST(@ID_Empleados AS VARCHAR) + ' insertado correctamente.';
+        RETURN 0; -- Éxito
+    END 
+END;
+GO
+
+-- --- Procedimiento para Insertar Proveedores ---
+-- Crear SP para Proveedores
+CREATE PROCEDURE dbo.sp_InsertarProveedor (
+    @ID_Proveedores INT,
+    @Nom_Proveedor VARCHAR(100),
+    @RFC_Proveedor VARCHAR(13),
+    @Correo_Proveedor VARCHAR(100),
+    @Tel_Proveedor VARCHAR(15),
+    @Calle_Proveedor VARCHAR(100),
+    @Num_Proveedor VARCHAR(10), -- VARCHAR para flexibilidad
+    @Colonia_Proveedor VARCHAR(100),
+    @CP_Proveedor VARCHAR(5),
+    @Alcaldia_Proveedor VARCHAR(50)
+)
+AS
+BEGIN
+    -- 1. Verificar si el ID del proveedor ya existe
+    IF EXISTS (SELECT 1 FROM dbo.proveedores WHERE ID_Proveedores = @ID_Proveedores)
+    BEGIN
+        PRINT 'ADVERTENCIA: El Proveedor con ID ' + CAST(@ID_Proveedores AS VARCHAR) + ' ya existe. No se insertará.';
+        RETURN -1; -- ID duplicado
+    END
+
+    -- 2. Intentar la inserción
+    BEGIN 
+        INSERT INTO dbo.proveedores (
+            ID_Proveedores, Nom_Proveedor, RFC_Proveedor, Correo_Proveedor,
+            Tel_Proveedor, Calle_Proveedor, Num_Proveedor, Colonia_Proveedor,
+            CP_Proveedor, Alcaldia_Proveedor
+        ) VALUES (
+            @ID_Proveedores, @Nom_Proveedor, @RFC_Proveedor, @Correo_Proveedor,
+            @Tel_Proveedor, @Calle_Proveedor, @Num_Proveedor, @Colonia_Proveedor,
+            @CP_Proveedor, @Alcaldia_Proveedor
+        );
+        RETURN 0; -- Éxito
+    END 
+END;
+GO
+
+-- --- Carga de 15 registros en Clientes (IDs 11 a 25) ---
+PRINT 'Cargando Clientes...';
+EXEC dbo.sp_InsertarCliente 11, 'Sofia', 'Vargas', 'Luna', 'sofia.vl@mail.com', '5510102030', 'F', '1998-08-20', 'Revolución', '500', 'Escandón', '11800', 'Miguel Hidalgo';
+EXEC dbo.sp_InsertarCliente 12, 'Javier', 'Morales', 'Soto', 'javier.ms@email.net', '5520203040', 'M', '1983-05-15', 'Patriotismo', '210', 'Condesa', '06140', 'Cuauhtémoc';
+EXEC dbo.sp_InsertarCliente 13, 'Valentina', 'Rojas', 'Mendoza', 'vale.rm@example.org', '5530304050', 'F', '2001-01-10', 'Universidad', '1500', 'Copilco', '04360', 'Coyoacán';
+EXEC dbo.sp_InsertarCliente 14, 'Diego', 'Castro', 'Guzman', 'diego.cg@mail.com', '5540405060', 'M', '1991-07-07', 'División del Norte', '800', 'Del Valle', '03100', 'Benito Juárez';
+EXEC dbo.sp_InsertarCliente 15, 'Camila', 'Ortega', 'Silva', 'camila.os@email.net', '5550506070', 'F', '1989-03-25', 'Ejército Nacional', '450', 'Polanco', '11520', 'Miguel Hidalgo';
+EXEC dbo.sp_InsertarCliente 16, 'Mateo', 'Salazar', 'Rios', 'mateo.sr@example.org', '5560607080', 'M', '1995-12-12', 'Periférico Sur', '3500', 'Jardines del Pedregal', '01900', 'Álvaro Obregón';
+EXEC dbo.sp_InsertarCliente 17, 'Isabella', 'Guerrero', 'Paredes', 'isa.gp@mail.com', '5570708090', 'F', '1999-10-30', 'Insurgentes Sur', '1800', 'Florida', '01030', 'Álvaro Obregón';
+EXEC dbo.sp_InsertarCliente 18, 'Sebastián', 'Molina', 'Cruz', 'sebastian.mc@email.net', '5580809000', 'M', '1980-06-18', 'Paseo de la Reforma', '300', 'Juárez', '06600', 'Cuauhtémoc';
+EXEC dbo.sp_InsertarCliente 19, 'Regina', 'Navarro', 'Flores', 'regina.nf@example.org', '5590900010', 'F', '2000-02-02', 'Homero', '110', 'Polanco', '11560', 'Miguel Hidalgo';
+EXEC dbo.sp_InsertarCliente 20, 'Emiliano', 'León', 'Herrera', 'emiliano.lh@mail.com', '5511112233', 'M', '1986-09-05', 'Felix Cuevas', '550', 'Del Valle', '03100', 'Benito Juárez';
+EXEC dbo.sp_InsertarCliente 21, 'Renata', 'Solis', 'Jiménez', 'renata.sj@email.net', '5522223344', 'F', '1993-04-14', 'Miguel Ángel de Quevedo', '800', 'Taxqueña', '04250', 'Coyoacán';
+EXEC dbo.sp_InsertarCliente 22, 'Leonardo', 'Romero', 'Blanco', 'leo.rb@example.org', '5533334455', 'M', '1975-11-28', 'Calz. de Tlalpan', '2000', 'Churubusco', '04210', 'Coyoacán';
+EXEC dbo.sp_InsertarCliente 23, 'Victoria', 'Alonso', 'Muñoz', 'vicky.am@mail.com', '5544445566', 'F', '1997-08-09', 'Miramontes', '3100', 'Coapa', '14300', 'Tlalpan';
+EXEC dbo.sp_InsertarCliente 24, 'Santiago', 'Paz', 'Vega', 'santi.pv@email.net', '5555556677', 'M', '1990-10-17', 'Barranca del Muerto', '150', 'Guadalupe Inn', '01020', 'Álvaro Obregón';
+EXEC dbo.sp_InsertarCliente 25, 'Ximena', 'Reyes', 'Campos', 'ximena.rc@example.org', '5566667788', 'F', '1988-12-22', 'San Jerónimo', '630', 'San Jerónimo Lídice', '10200', 'Magdalena Contreras';
+GO
+
+-- --- Carga de 15 registros en Empleados (IDs 8 a 22) ---
+PRINT 'Cargando Empleados...';
 -- Se asume que las sucursales con ID 1 y 2 existen.
-INSERT INTO empleados (
-    ID_Empleados, Nombre_Empleados, Ap_Pat_Empleados, Ap_Mat_Empleados, Correo_Empleados,
-    Tel_Empleados, Genero_Empleados, Fecha_nac_Empleados, Calle_Empleados, Num_Empleados,
-    Colonia_Empleados, CP_Empleados, Alcaldia_Empleados, Turno_Empleados, ID_Sucursales
-) VALUES
-(8, 'Adriana', 'López', 'García', 'adriana.lg@cinecorp.com', '5512123434', 'F', '1996-05-21', 'Obrero Mundial', 300, 'Piedad Narvarte', '03000', 'Benito Juárez', 'V', 1),
-(9, 'Andrés', 'Martínez', 'Hernández', 'andres.mh@cinecorp.com', '5523234545', 'M', '1991-02-11', 'Eugenia', 100, 'Del Valle', '03100', 'Benito Juárez', 'M', 2),
-(10, 'Gabriela', 'González', 'Pérez', 'gaby.gp@cinecorp.com', '5534345656', 'F', '1999-09-30', 'Amores', 800, 'Del Valle', '03100', 'Benito Juárez', 'N', 1),
-(11, 'Hugo', 'Díaz', 'Ramírez', 'hugo.dr@cinecorp.com', '5545456767', 'M', '1985-11-01', 'San Antonio', 450, 'Nápoles', '03810', 'Benito Juárez', 'V', 2),
-(12, 'Valeria', 'Sánchez', 'Torres', 'vale.st@cinecorp.com', '5556567878', 'F', '2000-07-14', 'Insurgentes Sur', 900, 'Nápoles', '03810', 'Benito Juárez', 'M', 1),
-(13, 'Fernando', 'Flores', 'Vázquez', 'fer.fv@cinecorp.com', '5567678989', 'M', '1994-01-05', 'Viaducto Tlalpan', 1200, 'San Lorenzo Huipulco', '14370', 'Tlalpan', 'N', 2),
-(14, 'Mariana', 'Romero', 'Jiménez', 'mariana.rj@cinecorp.com', '5578789090', 'F', '1997-03-19', 'Acoxpa', 500, 'Villa Lázaro Cárdenas', '14370', 'Tlalpan', 'V', 1),
-(15, 'Ricardo', 'Álvarez', 'Ruiz', 'ricardo.ar@cinecorp.com', '5589890101', 'M', '1988-08-08', 'Canal de Miramontes', 2500, 'Prado Coyoacán', '04810', 'Coyoacán', 'M', 2),
-(16, 'Paula', 'Moreno', 'Suárez', 'paula.ms@cinecorp.com', '5590901212', 'F', '1995-06-25', 'Taxqueña', 1300, 'Campestre Churubusco', '04200', 'Coyoacán', 'N', 1),
-(17, 'Daniel', 'Gutiérrez', 'Domínguez', 'daniel.gd@cinecorp.com', '5501012323', 'M', '1992-10-15', 'División del Norte', 3000, 'Ciudad Jardín', '04370', 'Coyoacán', 'V', 2),
-(18, 'Jimena', 'Ortiz', 'Benítez', 'jimena.ob@cinecorp.com', '5512123435', 'F', '1998-04-03', 'Copilco', 150, 'Copilco Universidad', '04360', 'Coyoacán', 'M', 1),
-(19, 'Alejandro', 'Silva', 'Castro', 'alex.sc@cinecorp.com', '5523234546', 'M', '1982-12-29', 'Eje 10 Sur', 50, 'Pedregal de Santo Domingo', '04369', 'Coyoacán', 'N', 2),
-(20, 'Natalia', 'Mendoza', 'Ramos', 'natalia.mr@cinecorp.com', '5534345657', 'F', '1996-09-12', 'Antonio Delfin Madrigal', 80, 'Ciudad Universitaria', '04510', 'Coyoacán', 'V', 1),
-(21, 'Eduardo', 'Castillo', 'Herrera', 'eduardo.ch@cinecorp.com', '5545456768', 'M', '1990-07-22', 'Anillo Periférico', 4000, 'Pedregal de Carrasco', '04700', 'Coyoacán', 'M', 2),
-(22, 'Monica', 'Cruz', 'Medina', 'monica.cm@cinecorp.com', '5556567879', 'F', '1993-11-05', 'Av. del Iman', 600, 'Ajusco', '04300', 'Coyoacán', 'N', 1);
+EXEC dbo.sp_InsertarEmpleado 8, 'Adriana', 'López', 'García', 'adriana.lg@cinecorp.com', '5512123434', 'F', '1996-05-21', 'Obrero Mundial', '300', 'Piedad Narvarte', '03000', 'Benito Juárez', 'V', 1;
+EXEC dbo.sp_InsertarEmpleado 9, 'Andrés', 'Martínez', 'Hernández', 'andres.mh@cinecorp.com', '5523234545', 'M', '1991-02-11', 'Eugenia', '100', 'Del Valle', '03100', 'Benito Juárez', 'M', 2;
+EXEC dbo.sp_InsertarEmpleado 10, 'Gabriela', 'González', 'Pérez', 'gaby.gp@cinecorp.com', '5534345656', 'F', '1999-09-30', 'Amores', '800', 'Del Valle', '03100', 'Benito Juárez', 'N', 1;
+EXEC dbo.sp_InsertarEmpleado 11, 'Hugo', 'Díaz', 'Ramírez', 'hugo.dr@cinecorp.com', '5545456767', 'M', '1985-11-01', 'San Antonio', '450', 'Nápoles', '03810', 'Benito Juárez', 'V', 2;
+EXEC dbo.sp_InsertarEmpleado 12, 'Valeria', 'Sánchez', 'Torres', 'vale.st@cinecorp.com', '5556567878', 'F', '2000-07-14', 'Insurgentes Sur', '900', 'Nápoles', '03810', 'Benito Juárez', 'M', 1;
+EXEC dbo.sp_InsertarEmpleado 13, 'Fernando', 'Flores', 'Vázquez', 'fer.fv@cinecorp.com', '5567678989', 'M', '1994-01-05', 'Viaducto Tlalpan', '1200', 'San Lorenzo Huipulco', '14370', 'Tlalpan', 'N', 2;
+EXEC dbo.sp_InsertarEmpleado 14, 'Mariana', 'Romero', 'Jiménez', 'mariana.rj@cinecorp.com', '5578789090', 'F', '1997-03-19', 'Acoxpa', '500', 'Villa Lázaro Cárdenas', '14370', 'Tlalpan', 'V', 1;
+EXEC dbo.sp_InsertarEmpleado 15, 'Ricardo', 'Álvarez', 'Ruiz', 'ricardo.ar@cinecorp.com', '5589890101', 'M', '1988-08-08', 'Canal de Miramontes', '2500', 'Prado Coyoacán', '04810', 'Coyoacán', 'M', 2;
+EXEC dbo.sp_InsertarEmpleado 16, 'Paula', 'Moreno', 'Suárez', 'paula.ms@cinecorp.com', '5590901212', 'F', '1995-06-25', 'Taxqueña', '1300', 'Campestre Churubusco', '04200', 'Coyoacán', 'N', 1;
+EXEC dbo.sp_InsertarEmpleado 17, 'Daniel', 'Gutiérrez', 'Domínguez', 'daniel.gd@cinecorp.com', '5501012323', 'M', '1992-10-15', 'División del Norte', '3000', 'Ciudad Jardín', '04370', 'Coyoacán', 'V', 2;
+EXEC dbo.sp_InsertarEmpleado 18, 'Jimena', 'Ortiz', 'Benítez', 'jimena.ob@cinecorp.com', '5512123435', 'F', '1998-04-03', 'Copilco', '150', 'Copilco Universidad', '04360', 'Coyoacán', 'M', 1;
+EXEC dbo.sp_InsertarEmpleado 19, 'Alejandro', 'Silva', 'Castro', 'alex.sc@cinecorp.com', '5523234546', 'M', '1982-12-29', 'Eje 10 Sur', '50', 'Pedregal de Santo Domingo', '04369', 'Coyoacán', 'N', 2;
+EXEC dbo.sp_InsertarEmpleado 20, 'Natalia', 'Mendoza', 'Ramos', 'natalia.mr@cinecorp.com', '5534345657', 'F', '1996-09-12', 'Antonio Delfin Madrigal', '80', 'Ciudad Universitaria', '04510', 'Coyoacán', 'V', 1;
+EXEC dbo.sp_InsertarEmpleado 21, 'Eduardo', 'Castillo', 'Herrera', 'eduardo.ch@cinecorp.com', '5545456768', 'M', '1990-07-22', 'Anillo Periférico', '4000', 'Pedregal de Carrasco', '04700', 'Coyoacán', 'M', 2;
+EXEC dbo.sp_InsertarEmpleado 22, 'Monica', 'Cruz', 'Medina', 'monica.cm@cinecorp.com', '5556567879', 'F', '1993-11-05', 'Av. del Iman', '600', 'Ajusco', '04300', 'Coyoacán', 'N', 1;
 GO
 
--- Insertar 15 nuevos registros en la tabla Proveedores (IDs 3 a 17)
-INSERT INTO proveedores (
-    ID_Proveedores, Nom_Proveedor, RFC_Proveedor, Correo_Proveedor,
-    Tel_Proveedor, Calle_Proveedor, Num_Proveedor, Colonia_Proveedor,
-    CP_Proveedor, Alcaldia_Proveedor
-) VALUES
-(3, 'Dulcería La Alegría SA de CV', 'ALE150120ABC', 'ventas@dulceria.com', '5511223344', 'Poniente 116', 200, 'Capultitlan', '07370', 'Gustavo A. Madero'),
-(4, 'ProyectoresMX', 'PMX100515XYZ', 'info@proyectoresmx.com', '5522334455', 'Norte 45', 800, 'Industrial Vallejo', '02300', 'Azcapotzalco'),
-(5, 'Limpieza Estrella', 'LES051101QWE', 'contacto@limpiezaestrella.mx', '5533445566', 'Calle 10', 50, 'Agrícola Pantitlán', '08100', 'Iztacalco'),
-(6, 'Refrescos del Centro', 'RCE980320RTY', 'pedidos@refrescoscentro.com', '5544556677', 'Sur 16', 150, 'Agrícola Oriental', '08500', 'Iztacalco'),
-(7, 'Uniformes Premier', 'UPR121212FGH', 'atencion@uniformespremier.net', '5555667788', 'Av. Tláhuac', 5500, 'San Lorenzo Tezonco', '09790', 'Iztapalapa'),
-(8, 'Carnes Selectas del Sur', 'CSS010810JKL', 'carnes.sur@mail.com', '5566778899', 'Calzada Ermita Iztapalapa', 3000, 'Santa Cruz Meyehualco', '09290', 'Iztapalapa'),
-(9, 'Grupo Publicitario Visual', 'GPV090205MNO', 'visual@publicidad.com.mx', '5577889900', 'La Viga', 1000, 'Mexicaltzingo', '09080', 'Iztapalapa'),
-(10, 'Seguridad Privada Centinela', 'SPC180722PQR', 'seguridad@centinela.org', '5588990011', 'Río Churubusco', 500, 'Gabriel Ramos Millán', '08000', 'Iztacalco'),
-(11, 'Mantenimiento Integral MG', 'MIM110414STU', 'servicios@mimg.com', '5599001122', 'Plutarco Elías Calles', 700, 'Zapotla', '08610', 'Iztacalco'),
-(12, 'Botanas Regionales Sol', 'BRS140618VWX', 'sol@botanas.com', '5500112233', 'Cuitláhuac', 250, 'Defensa Nacional', '02960', 'Azcapotzalco'),
-(13, 'Café Gourmet Sierra Azul', 'CGS070925YZA', 'cafe.sierra@gourmet.net', '5511223345', 'Aquiles Serdán', 1800, 'Pasteros', '02150', 'Azcapotzalco'),
-(14, 'Soluciones Tecnológicas Alfa', 'STA191010BCD', 'soporte@alfa-tech.com', '5522334456', 'Ingenieros Militares', 100, 'Argentina Poniente', '11230', 'Miguel Hidalgo'),
-(15, 'Artículos de Oficina PapelMax', 'AOP030303EFG', 'papelmax@oficina.com.mx', '5533445567', 'Marina Nacional', 300, 'Anáhuac I Secc', '11320', 'Miguel Hidalgo'),
-(16, 'Helados Artesanales Frío Rico', 'HAF171108HIJ', 'friorico@helados.com', '5544556678', 'Lago Alberto', 442, 'Anáhuac I Secc', '11320', 'Miguel Hidalgo'),
-(17, 'Equipos de Audio ProSound', 'EAP130215KLM', 'prosound@equiposaudio.net', '5555667789', 'Newton', 150, 'Polanco', '11560', 'Miguel Hidalgo');
+-- --- Carga de 15 registros en Proveedores (IDs 3 a 17) ---
+PRINT 'Cargando Proveedores...';
+EXEC dbo.sp_InsertarProveedor 3, 'Dulcería La Alegría SA de CV', 'ALE150120ABC', 'ventas@dulceria.com', '5511223344', 'Poniente 116', '200', 'Capultitlan', '07370', 'Gustavo A. Madero';
+EXEC dbo.sp_InsertarProveedor 4, 'ProyectoresMX', 'PMX100515XYZ', 'info@proyectoresmx.com', '5522334455', 'Norte 45', '800', 'Industrial Vallejo', '02300', 'Azcapotzalco';
+EXEC dbo.sp_InsertarProveedor 5, 'Limpieza Estrella', 'LES051101QWE', 'contacto@limpiezaestrella.mx', '5533445566', 'Calle 10', '50', 'Agrícola Pantitlán', '08100', 'Iztacalco';
+EXEC dbo.sp_InsertarProveedor 6, 'Refrescos del Centro', 'RCE980320RTY', 'pedidos@refrescoscentro.com', '5544556677', 'Sur 16', '150', 'Agrícola Oriental', '08500', 'Iztacalco';
+EXEC dbo.sp_InsertarProveedor 7, 'Uniformes Premier', 'UPR121212FGH', 'atencion@uniformespremier.net', '5555667788', 'Av. Tláhuac', '5500', 'San Lorenzo Tezonco', '09790', 'Iztapalapa';
+EXEC dbo.sp_InsertarProveedor 8, 'Carnes Selectas del Sur', 'CSS010810JKL', 'carnes.sur@mail.com', '5566778899', 'Calzada Ermita Iztapalapa', '3000', 'Santa Cruz Meyehualco', '09290', 'Iztapalapa';
+EXEC dbo.sp_InsertarProveedor 9, 'Grupo Publicitario Visual', 'GPV090205MNO', 'visual@publicidad.com.mx', '5577889900', 'La Viga', '1000', 'Mexicaltzingo', '09080', 'Iztapalapa';
+EXEC dbo.sp_InsertarProveedor 10, 'Seguridad Privada Centinela', 'SPC180722PQR', 'seguridad@centinela.org', '5588990011', 'Río Churubusco', '500', 'Gabriel Ramos Millán', '08000', 'Iztacalco';
+EXEC dbo.sp_InsertarProveedor 11, 'Mantenimiento Integral MG', 'MIM110414STU', 'servicios@mimg.com', '5599001122', 'Plutarco Elías Calles', '700', 'Zapotla', '08610', 'Iztacalco';
+EXEC dbo.sp_InsertarProveedor 12, 'Botanas Regionales Sol', 'BRS140618VWX', 'sol@botanas.com', '5500112233', 'Cuitláhuac', '250', 'Defensa Nacional', '02960', 'Azcapotzalco';
+EXEC dbo.sp_InsertarProveedor 13, 'Café Gourmet Sierra Azul', 'CGS070925YZA', 'cafe.sierra@gourmet.net', '5511223345', 'Aquiles Serdán', '1800', 'Pasteros', '02150', 'Azcapotzalco';
+EXEC dbo.sp_InsertarProveedor 14, 'Soluciones Tecnológicas Alfa', 'STA191010BCD', 'soporte@alfa-tech.com', '5522334456', 'Ingenieros Militares', '100', 'Argentina Poniente', '11230', 'Miguel Hidalgo';
+EXEC dbo.sp_InsertarProveedor 15, 'Artículos de Oficina PapelMax', 'AOP030303EFG', 'papelmax@oficina.com.mx', '5533445567', 'Marina Nacional', '300', 'Anáhuac I Secc', '11320', 'Miguel Hidalgo';
+EXEC dbo.sp_InsertarProveedor 16, 'Helados Artesanales Frío Rico', 'HAF171108HIJ', 'friorico@helados.com', '5544556678', 'Lago Alberto', '442', 'Anáhuac I Secc', '11320', 'Miguel Hidalgo';
+EXEC dbo.sp_InsertarProveedor 17, 'Equipos de Audio ProSound', 'EAP130215KLM', 'prosound@equiposaudio.net', '5555667789', 'Newton', '150', 'Polanco', '11560', 'Miguel Hidalgo';
 GO
 
 -- c) Genere una vista de los últimos 3 registros de las tablas del punto anterior.
