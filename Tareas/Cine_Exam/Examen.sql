@@ -144,7 +144,6 @@ END;
 GO
 
 -- --- Carga de 15 registros en Clientes (IDs 11 a 25) ---
-PRINT 'Cargando Clientes...';
 EXEC dbo.sp_InsertarCliente 11, 'Sofia', 'Vargas', 'Luna', 'sofia.vl@mail.com', '5510102030', 'F', '1998-08-20', 'Revolución', '500', 'Escandón', '11800', 'Miguel Hidalgo';
 EXEC dbo.sp_InsertarCliente 12, 'Javier', 'Morales', 'Soto', 'javier.ms@email.net', '5520203040', 'M', '1983-05-15', 'Patriotismo', '210', 'Condesa', '06140', 'Cuauhtémoc';
 EXEC dbo.sp_InsertarCliente 13, 'Valentina', 'Rojas', 'Mendoza', 'vale.rm@example.org', '5530304050', 'F', '2001-01-10', 'Universidad', '1500', 'Copilco', '04360', 'Coyoacán';
@@ -163,7 +162,6 @@ EXEC dbo.sp_InsertarCliente 25, 'Ximena', 'Reyes', 'Campos', 'ximena.rc@example.
 GO
 
 -- --- Carga de 15 registros en Empleados (IDs 8 a 22) ---
-PRINT 'Cargando Empleados...';
 -- Se asume que las sucursales con ID 1 y 2 existen.
 EXEC dbo.sp_InsertarEmpleado 8, 'Adriana', 'López', 'García', 'adriana.lg@cinecorp.com', '5512123434', 'F', '1996-05-21', 'Obrero Mundial', '300', 'Piedad Narvarte', '03000', 'Benito Juárez', 'V', 1;
 EXEC dbo.sp_InsertarEmpleado 9, 'Andrés', 'Martínez', 'Hernández', 'andres.mh@cinecorp.com', '5523234545', 'M', '1991-02-11', 'Eugenia', '100', 'Del Valle', '03100', 'Benito Juárez', 'M', 2;
@@ -183,7 +181,6 @@ EXEC dbo.sp_InsertarEmpleado 22, 'Monica', 'Cruz', 'Medina', 'monica.cm@cinecorp
 GO
 
 -- --- Carga de 15 registros en Proveedores (IDs 3 a 17) ---
-PRINT 'Cargando Proveedores...';
 EXEC dbo.sp_InsertarProveedor 3, 'Dulcería La Alegría SA de CV', 'ALE150120ABC', 'ventas@dulceria.com', '5511223344', 'Poniente 116', '200', 'Capultitlan', '07370', 'Gustavo A. Madero';
 EXEC dbo.sp_InsertarProveedor 4, 'ProyectoresMX', 'PMX100515XYZ', 'info@proyectoresmx.com', '5522334455', 'Norte 45', '800', 'Industrial Vallejo', '02300', 'Azcapotzalco';
 EXEC dbo.sp_InsertarProveedor 5, 'Limpieza Estrella', 'LES051101QWE', 'contacto@limpiezaestrella.mx', '5533445566', 'Calle 10', '50', 'Agrícola Pantitlán', '08100', 'Iztacalco';
